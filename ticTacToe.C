@@ -1,6 +1,24 @@
-/* Hello World program */
+/* Assignment 2
+* Laura Berry (10111166)
+*
+*/
 
 #include<stdio.h>
+
+
+
+
+void printboard(const char *a[][6])
+{
+		for (int k=0; k<6;k++)
+	{
+		for (int m=0; m<6; m++)
+		{
+			printf(a[k][m]);
+		}
+		printf("\n");
+	}
+}
 
 main()
 {
@@ -39,37 +57,13 @@ main()
 		}	
 	}
 	
-	for (int k=0; k<6;k++)
-	{
-		for (int m=0; m<6; m++)
-		{
-			printf(board[k][m]);
-		}
-		printf("\n");
-	}
-    /*printf("\t 1 \t 2 \t 3 \n");
-	printf("\n");
-	printf("A\t|\t|\n");
-	printf("------------\n");
-	printf("B\t|\t|\n");
-	printf("------------\n");
-	printf("C\t|\t|\n");
-	printf("please ender a letter...\n");
-	scanf("%c",&b);
-	if(b!="A" && b!="a")
-	{
-		if(b!="B" && b!="b")
-		{
-			if(b!="C" && b!="c")
-			{
-				printf("that is not valid");
-			}
-		}
-	}*/
+	printboard(board);
 	printf("please enter a letter: ...");
 	scanf("%c", &b);
 	printf("please enter a number: ...");
 	scanf("%d", &a);
+
+	
 	
 
 }
