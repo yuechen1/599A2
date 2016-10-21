@@ -5,7 +5,52 @@
 
 #include<stdio.h>
 
-
+bool isEmpty(const char *a[][6], int b, char c)
+{
+	int row;
+	int column;
+	if(c=='A'||c=='a')
+	{
+		row=1;
+	}
+	else if(c=='B'|| c=='b')
+	{
+		row= 3;
+	}
+	else if(c=='C'||c=='c')
+	{
+		row=5;
+	}
+	else
+	{
+		printf("input not valid");
+	}
+	if(b==1)
+	{
+		column = 1;
+	}
+	else if (b==2)
+	{
+		column = 3;
+	}
+	else if (b==3)
+	{
+		column=5;
+	}
+	else
+	{
+		printf("input not valid");
+	}
+	/*const char *result=a[row][column];
+	if(result=='o' || result=='x')
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}*/
+}
 
 
 void printboard(const char *a[][6])
@@ -22,8 +67,9 @@ void printboard(const char *a[][6])
 
 main()
 {
-	char b;
-	int a;
+	bool clear;
+	char letter;
+	int num;
 	const char *board[6][6];	
 	board[0][1]="1";
 	board[0][3]="2";
@@ -59,11 +105,10 @@ main()
 	
 	printboard(board);
 	printf("please enter a letter: ...");
-	scanf("%c", &b);
+	scanf("%c", &letter);
 	printf("please enter a number: ...");
-	scanf("%d", &a);
+	scanf("%d", &num);
 
-	
-	
+	clear= isEmpty(board, num, letter);
 
 }
