@@ -5,6 +5,8 @@
 
 #include<stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
 int row;
 int column;
 
@@ -54,6 +56,19 @@ bool isEmpty(const char *a[][6], int b, char c)
 	}
 }
 
+bool computerTurn(const char *a[][6], int b , int c)
+{	
+	const char *result=a[b][c];
+	const char *space=" ";
+	if(strcmp(result, space)==0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 void printboard(const char *a[][6])
 {
@@ -70,6 +85,7 @@ void printboard(const char *a[][6])
 main()
 {
 	bool clear;
+	bool done = false;
 	char letter;
 	int num;
 	const char *board[6][6];	
@@ -104,27 +120,57 @@ main()
 			board[5][i]=" ";
 		}	
 	}
-	
-	printboard(board);
-	printf("please enter a letter: ...");
-	scanf("%c", &letter);
-	printf("please enter a number: ...");
-	scanf("%d", &num);
-
-	clear= isEmpty(board, num, letter);
-	if(clear==true)
+	while (done==false)
 	{
-		printf("true\n");
-		board [row][column]="o";
+		letter='d';
+		num=0;
 		printboard(board);
-	}
-	else if(clear==false)
-	{
-		printf("false\n");
-	}
-	else
-	{
-		printf("problem!!\n");
+		printf("please enter a letter: ...");
+		scanf("%c", &letter);
+		printf("please enter a number: ...");
+		scanf("%d", &num);
+
+		clear= isEmpty(board, num, letter);
+		if(clear==true)
+		{
+			printf("true\n");
+			board [row][column]="o";
+			printboard(board);
+		}
+		else 
+		{
+			printf("false\n");
+		}
+			int randNum1= rand();
+		randNum1= randNum1%3;
+		printf("%i", randNum1);
+		int randNum2=rand();
+		randNum2=randNum2%3;
+		printf(" %i\n", randNum2);
+		bool compTurn=false;
+		while(compTurn==false)
+		{
+			clear=computerTurn(board, randNum1, randNum2);
+			if(clear==true)
+			{
+				board[randNum1][randNum2]="x";
+				printboard(board);
+				compTurn=true;
+			}
+			else
+			{
+				printf("false");
+				if(randNum1<3)
+				{
+					randNum1++;
+				}
+				else
+				{
+					randNum2++;
+				}
+			}
+		}
+		done=true;
 	}
 
 }
