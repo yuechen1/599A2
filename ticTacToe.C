@@ -4,6 +4,7 @@
 */
 
 #include<stdio.h>
+#include <string.h>
 
 bool isEmpty(const char *a[][6], int b, char c)
 {
@@ -39,17 +40,19 @@ bool isEmpty(const char *a[][6], int b, char c)
 	}
 	else
 	{
-		printf("input not valid");
+		printf("input not valid\n");
 	}
-	/*const char *result=a[row][column];
-	if(result=='o' || result=='x')
+	const char *result=a[row][column];
+	const char *oh="o";
+	const char *ex="x";
+	if(strcmp(result, oh))
 	{
 		return false;
 	}
 	else
 	{
 		return true;
-	}*/
+	}
 }
 
 
