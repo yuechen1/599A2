@@ -5,11 +5,11 @@
 
 #include<stdio.h>
 #include <string.h>
+int row;
+int column;
 
 bool isEmpty(const char *a[][6], int b, char c)
 {
-	int row;
-	int column;
 	if(c=='A'||c=='a')
 	{
 		row=1;
@@ -43,15 +43,14 @@ bool isEmpty(const char *a[][6], int b, char c)
 		printf("input not valid\n");
 	}
 	const char *result=a[row][column];
-	const char *oh="o";
-	const char *ex="x";
-	if(strcmp(result, oh))
+	const char *space=" ";
+	if(strcmp(result, space)==0)
 	{
-		return false;
+		return true;
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 }
 
@@ -113,5 +112,19 @@ main()
 	scanf("%d", &num);
 
 	clear= isEmpty(board, num, letter);
+	if(clear==true)
+	{
+		printf("true\n");
+		board [row][column]="o";
+		printboard(board);
+	}
+	else if(clear==false)
+	{
+		printf("false\n");
+	}
+	else
+	{
+		printf("problem!!\n");
+	}
 
 }
