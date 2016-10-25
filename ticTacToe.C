@@ -90,6 +90,30 @@ bool computerTurn(const char *a[][6], int b , int c)
 	const char *space=" ";
 	if(strcmp(result, space)==0)
 	{
+		if(c=='A'||c== 'a')
+		{
+			row=1;
+		}
+		else if(c=='B'||c== 'b')
+		{
+			row= 3;
+		}
+		else if(c=='C'||c== 'c')
+		{
+			row=5;
+		}
+		if(b=='1')
+		{
+			column = 1;
+		}
+		else if (b =='2')
+		{
+			column = 3;
+		}
+		else if(b=='3')
+		{
+			column=5;
+		}
 		return true;
 	}
 	else
