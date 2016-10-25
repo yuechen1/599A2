@@ -59,23 +59,20 @@ bool isEmpty(const char *a[][6], int b, int c)
 	}
 }
 bool isDone(const char *a[][6], const char* b, int c, int d)
-{
-	
-	if (c==1 &&d==1)
-	{
-		if(a[c+1][d+1]==b)
-		{
-			if(a[c+2][d+2]==b)
-			{
-				return true;
-			}
-		}
-	}
-	else if (a[c][1]==b && a[c][3]==b && a[c][5]==b)
+{	
+	if((strcmp(a[1][1],b)==1)&&(strcmp(a[3][3],b)==1)&&(strcmp(a[5][5],b)==1))
 	{
 		return true;
 	}
-	else if(a[1][d]==b && a[3][d]==b && a[5][d]==b)
+	if((strcmp(a[5][1],b)==1)&&(strcmp(a[3][3],b)==1)&&(strcmp(a[1][5],b)==1))
+	{
+		return true;
+	}
+	else if (strcmp(a[c][1],b)==1 && strcmp(a[c][3], b)==1 && strcmp(a[c][5], b)==1)
+	{
+		return true;
+	}
+	else if(strcmp(a[1][d],b)==1 && strcmp(a[3][d],b)==1 && strcmp(a[5][d],b)==1)
 	{
 		return true;
 	}
@@ -192,13 +189,11 @@ main()
 		mvprintw(r,0,"please enter a letter: ...");
 		refresh();
 		letter=getch();
-		//mvprintw(r,1, letter);
 
 		r++;
 		mvprintw(r,0,"please enter a number: ...");
 		refresh();
 		num=getch();
-		//mvprintw(r,1, num);
 
 
 		clear= isEmpty(board, num, letter);
@@ -206,13 +201,31 @@ main()
 		{
 			mvprintw(row, column, "o");
 			board [row][column]="o";
-			//printboard(board);
 		}
 		else 
-		{
-			mvprintw(row, column, "false\n");
+		{	
+			while(clear==false)
+			{
+				mvprintw(r, 0, "input is invalde, try again\n");
+				r=r-2;
+				mvprintw(r,0,"please enter a letter: ...");
+				refresh();
+				letter=getch();
+				r++;
+				mvprintw(r,0,"please enter a number: ...");
+				refresh();
+				num=getch();
+				clear= isEmpty(board, num, letter);
+			}
+			if(clear==true)
+			{
+				mvprintw(row, column, "o");
+				board [row][column]="o";
+			}
 		}
-		done=isDone(board, "o", row, column);
+		r++;
+		mvprintw(r,0, "                           ");
+		//done=isDone(board, "o", row, column);
 		int randNum1= rand();
 		randNum1= randNum1%3;
 		int randNum2=rand();
@@ -225,12 +238,10 @@ main()
 			{
 				mvprintw(row, column, "x");
 				board[randNum1][randNum2]="x";
-				//printboard(board);
 				compTurn=true;
 			}
 			else
 			{
-				mvprintw(row, column, "false");
 				if(randNum1<3)
 				{
 					randNum1++;
@@ -242,6 +253,11 @@ main()
 			}
 		}
 		//done=isDone(board, "x", randNum1, randNum2);
+	}
+	r++;
+	while(1)
+	{
+		mvprintw(r, 0, "YOU WIN!!");
 	}
 	endwin();
 }
