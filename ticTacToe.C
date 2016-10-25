@@ -55,7 +55,31 @@ bool isEmpty(const char *a[][6], int b, char c)
 		return false;
 	}
 }
-
+bool isDone(const char *a[][6], const char* b, int c, int d)
+{
+	if (c==1 &&d==1)
+	{
+		if(a[c+1][d+1]==b)
+		{
+			if(a[c+2][d+2]==b)
+			{
+				return true;
+			}
+		}
+	}
+	else if (a[c][1]==b && a[c][3]==b && a[c][5]==b)
+	{
+		return true;
+	}
+	else if(a[1][d]==b && a[3][d]==b && a[5][d]==b)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
 bool computerTurn(const char *a[][6], int b , int c)
 {	
 	const char *result=a[b][c];
@@ -126,9 +150,15 @@ main()
 		num=0;
 		printboard(board);
 		printf("please enter a letter: ...");
-		scanf("%c", &letter);
+		while(letter=='d')
+		{
+			scanf("%c", &letter);
+		}
 		printf("please enter a number: ...");
-		scanf("%d", &num);
+		while(num==0)
+		{
+			scanf("%d", &num);
+		}
 
 		clear= isEmpty(board, num, letter);
 		if(clear==true)
@@ -141,6 +171,7 @@ main()
 		{
 			printf("false\n");
 		}
+		done=isDone(board, "o", row, column);
 			int randNum1= rand();
 		randNum1= randNum1%3;
 		printf("%i", randNum1);
@@ -170,7 +201,7 @@ main()
 				}
 			}
 		}
-		done=true;
+		done=isDone(board, "x", randNum1, randNum2);
 	}
 
 }
