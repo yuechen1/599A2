@@ -6,43 +6,46 @@
 #include<stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <curses.h>
 
 int row;
 int column;
+int r,c,nrows,ncols;
 
-bool isEmpty(const char *a[][6], int b, char c)
+bool isEmpty(const char *a[][6], int b, int c)
 {
-	if(c=='A'||c=='a')
+	r++;
+	if(c=='A'||c== 'a')
 	{
 		row=1;
 	}
-	else if(c=='B'|| c=='b')
+	else if(c=='B'||c== 'b')
 	{
 		row= 3;
 	}
-	else if(c=='C'||c=='c')
+	else if(c=='C'||c== 'c')
 	{
 		row=5;
 	}
 	else
 	{
-		printf("input not valid");
+		mvprintw(r, 0, " letter input not valid");
 	}
-	if(b==1)
+	if(b=='1')
 	{
 		column = 1;
 	}
-	else if (b==2)
+	else if (b =='2')
 	{
 		column = 3;
 	}
-	else if (b==3)
+	else if(b=='3')
 	{
 		column=5;
 	}
 	else
 	{
-		printf("input not valid\n");
+		mvprintw(r, 0, " number input not valid");
 	}
 	const char *result=a[row][column];
 	const char *space=" ";
@@ -57,6 +60,7 @@ bool isEmpty(const char *a[][6], int b, char c)
 }
 bool isDone(const char *a[][6], const char* b, int c, int d)
 {
+	
 	if (c==1 &&d==1)
 	{
 		if(a[c+1][d+1]==b)
@@ -96,21 +100,33 @@ bool computerTurn(const char *a[][6], int b , int c)
 
 void printboard(const char *a[][6])
 {
-		for (int k=0; k<6;k++)
+	r=0;
+	c=0;
+	for (int k=0; k<6;k++)
 	{
+		c=0;
 		for (int m=0; m<6; m++)
 		{
-			printf(a[k][m]);
+			mvprintw(r,c,a[k][m]);
+			c++;
 		}
-		printf("\n");
+		r++;
 	}
+	refresh();
 }
 
 main()
 {
+	WINDOW *wnd;
+
+	wnd = initscr(); // curses call to initialize window
+	cbreak(); // curses call to set no waiting for Enter key
+	noecho(); // curses call to set no echoing
+	getmaxyx(wnd,nrows,ncols);
+	curs_set(FALSE);
 	bool clear;
 	bool done = false;
-	char letter;
+	int letter;
 	int num;
 	const char *board[6][6];	
 	board[0][1]="1";
@@ -146,51 +162,51 @@ main()
 	}
 	while (done==false)
 	{
-		letter='d';
-		num=0;
 		printboard(board);
-		printf("please enter a letter: ...");
-		while(letter=='d')
-		{
-			scanf("%c", &letter);
-		}
-		printf("please enter a number: ...");
-		while(num==0)
-		{
-			scanf("%d", &num);
-		}
+		r++;
+		c=0;
+		mvprintw(r,0,"please enter a letter: ...");
+		refresh();
+		letter=getch();
+		//mvprintw(r,1, letter);
+
+		r++;
+		mvprintw(r,0,"please enter a number: ...");
+		refresh();
+		num=getch();
+		//mvprintw(r,1, num);
+
 
 		clear= isEmpty(board, num, letter);
 		if(clear==true)
 		{
-			printf("true\n");
+			mvprintw(row, column, "o");
 			board [row][column]="o";
-			printboard(board);
+			//printboard(board);
 		}
 		else 
 		{
-			printf("false\n");
+			mvprintw(row, column, "false\n");
 		}
 		done=isDone(board, "o", row, column);
-			int randNum1= rand();
+		int randNum1= rand();
 		randNum1= randNum1%3;
-		printf("%i", randNum1);
 		int randNum2=rand();
 		randNum2=randNum2%3;
-		printf(" %i\n", randNum2);
 		bool compTurn=false;
 		while(compTurn==false)
 		{
 			clear=computerTurn(board, randNum1, randNum2);
 			if(clear==true)
 			{
+				mvprintw(row, column, "x");
 				board[randNum1][randNum2]="x";
-				printboard(board);
+				//printboard(board);
 				compTurn=true;
 			}
 			else
 			{
-				printf("false");
+				mvprintw(row, column, "false");
 				if(randNum1<3)
 				{
 					randNum1++;
@@ -201,7 +217,7 @@ main()
 				}
 			}
 		}
-		done=isDone(board, "x", randNum1, randNum2);
+		//done=isDone(board, "x", randNum1, randNum2);
 	}
-
+	endwin();
 }
