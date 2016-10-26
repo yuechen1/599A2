@@ -58,21 +58,44 @@ bool isEmpty(const char *a[][6], int b, int c)
 		return false;
 	}
 }
-bool isDone(const char *a[][6], const char* b, int c, int d)
+bool isDone_o(const char *a[][6], int b)
+{
+	if(a[b][1]==a[b][3] && a[b][3]==a[b][5])
+	{
+		return true;
+	}
+	else if (a[1][b]==a[3][b]&&a[3][b]==a[5][b])
+	{
+		return true;
+	}
+	if((strcmp(a[1][1],"o")==0)&&(strcmp(a[3][3],"o")==0)&&(strcmp(a[5][5],"o")==0))
+	{
+		return true;
+	}
+	else if((strcmp(a[5][1],"o")==0)&&(strcmp(a[3][3],"o")==0)&&(strcmp(a[1][5],"o")==0))
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+bool isDone_x(const char *a[][6], int b)
 {	
-	if((strcmp(a[1][1],b)==1)&&(strcmp(a[3][3],b)==1)&&(strcmp(a[5][5],b)==1))
+	if(a[b][1]==a[b][3] && a[b][3]==a[b][5])
 	{
 		return true;
 	}
-	if((strcmp(a[5][1],b)==1)&&(strcmp(a[3][3],b)==1)&&(strcmp(a[1][5],b)==1))
+	else if (a[1][b]==a[3][b]&&a[3][b]==a[5][b])
 	{
 		return true;
 	}
-	else if (strcmp(a[c][1],b)==1 && strcmp(a[c][3], b)==1 && strcmp(a[c][5], b)==1)
+	if((strcmp(a[1][1],"x")==0)&&(strcmp(a[3][3],"x")==0)&&(strcmp(a[5][5],"x")==0))
 	{
 		return true;
 	}
-	else if(strcmp(a[1][d],b)==1 && strcmp(a[3][d],b)==1 && strcmp(a[5][d],b)==1)
+	else if((strcmp(a[5][1],"x")==0)&&(strcmp(a[3][3],"x")==0)&&(strcmp(a[1][5],"x")==0))
 	{
 		return true;
 	}
@@ -140,16 +163,16 @@ main()
 {
 	WINDOW *wnd;
 
-	wnd = initscr(); // curses call to initialize window
-	cbreak(); // curses call to set no waiting for Enter key
-	noecho(); // curses call to set no echoing
-	getmaxyx(wnd,nrows,ncols);
+	wnd = initscr(); 												// curses call to initialize window
+	cbreak(); 														// curses call to set no waiting for Enter key
+	noecho(); 														// curses call to set no echoing
+	getmaxyx(wnd,nrows,ncols);										//r and c cannot go above these numbers
 	curs_set(FALSE);
-	bool clear;
-	bool done = false;
-	int letter;
-	int num;
-	const char *board[6][6];	
+	bool clear;														//is the space chosen clear?
+	bool done = false;												//is the game over?
+	int letter;														//letter chosen
+	int num;														//number chosen
+	const char *board[6][6];										//initalize the playing board
 	board[0][1]="1";
 	board[0][3]="2";
 	board[0][5]="3";
@@ -174,37 +197,36 @@ main()
 			board[5][i]="|";
 			board[0][i]=" ";
 		}
-		else if(i==1|| i== 3 || i==5)
+		else if(i==1|| i== 3 || i==5)								//these are the spaces for the xs and ox to go
 		{
 			board[1][i]=" ";
 			board[3][i]=" ";
 			board[5][i]=" ";
 		}	
 	}
+
 	while (done==false)
 	{
-		printboard(board);
-		r++;
-		c=0;
-		mvprintw(r,0,"please enter a letter: ...");
+		printboard(board);											//print new board
+
+		mvprintw(r,0,"please enter a letter: ...");					//get letter input
 		refresh();
 		letter=getch();
 
 		r++;
-		mvprintw(r,0,"please enter a number: ...");
+		mvprintw(r,0,"please enter a number: ...");					//get number input
 		refresh();
 		num=getch();
 
-
-		clear= isEmpty(board, num, letter);
-		if(clear==true)
+		clear= isEmpty(board, num, letter);							//check if space chosen is free
+		if(clear==true)												//if so print "o" in the space chosen and update the board.
 		{
 			mvprintw(row, column, "o");
 			board [row][column]="o";
 		}
-		else 
+		else 														//if not prompt user to input new letter and number combo
 		{	
-			while(clear==false)
+			while(clear==false)										//do not go to computer turn until user has chosen valid input.
 			{
 				mvprintw(r, 0, "input is invalde, try again\n");
 				r=r-2;
@@ -217,47 +239,56 @@ main()
 				num=getch();
 				clear= isEmpty(board, num, letter);
 			}
-			if(clear==true)
+			if(clear==true)											// print "o" in the space chosen and update the board.
 			{
 				mvprintw(row, column, "o");
 				board [row][column]="o";
 			}
 		}
-		r++;
-		mvprintw(r,0, "                           ");
-		//done=isDone(board, "o", row, column);
-		int randNum1= rand();
+		//done=isDone_o(board, row);										// check if game is over
+		
+		int randNum1= rand();										//select 2 random numbers between 1 and 3.
 		randNum1= randNum1%3;
 		int randNum2=rand();
 		randNum2=randNum2%3;
 		bool compTurn=false;
-		while(compTurn==false)
+		while(compTurn==false)										// do not move on until the computer is done it's turn
 		{
-			clear=computerTurn(board, randNum1, randNum2);
-			if(clear==true)
+			clear=computerTurn(board, randNum1, randNum2);			//check if space chosen is free
+			if(clear==true)											//if so print "o" in the space chosen and update the board.
 			{
 				mvprintw(row, column, "x");
 				board[randNum1][randNum2]="x";
 				compTurn=true;
 			}
-			else
+			else													//if not change chosen number
 			{
-				if(randNum1<3)
+				if(randNum1<3)										//if y value can be increased increase it.
 				{
 					randNum1++;
 				}
-				else
+				else												//if not increase x value
 				{
 					randNum2++;
 				}
 			}
 		}
-		//done=isDone(board, "x", randNum1, randNum2);
+		//done=isDone_x(board, randNum1);
 	}
-	r++;
-	while(1)
+	bool Owins=isDone_o(board, row);									//check if player has won the game
+	if(Owins==true)												//if so tell them the won
 	{
-		mvprintw(r, 0, "YOU WIN!!");
+		while(1)
+		{
+			mvprintw(r, 0, "YOU WIN!!");
+		}
+	}
+	else														//if not tell them computer won.
+	{
+		while(1)
+		{
+			mvprintw(r, 0, "COMPUTER WINS!!");
+		}
 	}
 	endwin();
 }
