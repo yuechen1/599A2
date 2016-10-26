@@ -12,7 +12,7 @@ int row;
 int column;
 int r,c,nrows,ncols;
 
-bool isEmpty(const char *a[][6], int b, int c)
+bool isEmpty(const char *a[][6], int b, int c)			//checks if space is free
 {
 	r++;
 	if(c=='A'||c== 'a')
@@ -58,21 +58,32 @@ bool isEmpty(const char *a[][6], int b, int c)
 		return false;
 	}
 }
-bool isDone_o(const char *a[][6], int b)
+bool isDone_o(const char *a[][6], int b)					//checks if "o" has 3 in a row
 {
-	if(a[b][1]==a[b][3] && a[b][3]==a[b][5])
+	const char *oneone=a[1][1];
+	const char *threethree=a[3][3];
+	const char *fivefive=a[5][5];
+	const char *fiveone=a[5][1];
+	const char *onefive=a[1][5];
+	const char *H1=a[b][1];
+	const char *H2=a[b][3];
+	const char *H3=a[b][5];
+	const char *V1=a[1][b];
+	const char *V2=a[3][b];
+	const char *V3=a[5][b];
+	if((strcmp(H1,"o")==0)&&(strcmp(H2,"o")==0)&&(strcmp(H3,"o")==0))				//checks horizontal
 	{
 		return true;
 	}
-	else if (a[1][b]==a[3][b]&&a[3][b]==a[5][b])
+	else if ((strcmp(V1,"o")==0)&&(strcmp(V2,"o")==0)&&(strcmp(V3,"o")==0))			//checks vertical
 	{
 		return true;
 	}
-	if((strcmp(a[1][1],"o")==0)&&(strcmp(a[3][3],"o")==0)&&(strcmp(a[5][5],"o")==0))
+	else if((strcmp(oneone,"o")==0)&&(strcmp(threethree,"o")==0)&&(strcmp(fivefive,"o")==0))	//checks diagonal
 	{
 		return true;
 	}
-	else if((strcmp(a[5][1],"o")==0)&&(strcmp(a[3][3],"o")==0)&&(strcmp(a[1][5],"o")==0))
+	else if((strcmp(fiveone,"o")==0)&&(strcmp(threethree,"o")==0)&&(strcmp(onefive,"o")==0))	//checks diagonal
 	{
 		return true;
 	}
@@ -81,21 +92,32 @@ bool isDone_o(const char *a[][6], int b)
 		return false;
 	}
 }
-bool isDone_x(const char *a[][6], int b)
+bool isDone_x(const char *a[][6], int b)					//checks if "x" has 3 in a row
 {	
-	if(a[b][1]==a[b][3] && a[b][3]==a[b][5])
+	const char *oneone=a[1][1];
+	const char *threethree=a[3][3];
+	const char *fivefive=a[5][5];
+	const char *fiveone=a[5][1];
+	const char *onefive=a[1][5];
+	const char *H1=a[b][1];
+	const char *H2=a[b][3];
+	const char *H3=a[b][5];
+	const char *V1=a[1][b];
+	const char *V2=a[3][b];
+	const char *V3=a[5][b];
+	if((strcmp(H1,"x")==0)&&(strcmp(H2,"x")==0)&&(strcmp(H3,"x")==0))				//checks horizontal
 	{
 		return true;
 	}
-	else if (a[1][b]==a[3][b]&&a[3][b]==a[5][b])
+	else if ((strcmp(V1,"x")==0)&&(strcmp(V2,"x")==0)&&(strcmp(V3,"x")==0))			//checks vertical
 	{
 		return true;
 	}
-	if((strcmp(a[1][1],"x")==0)&&(strcmp(a[3][3],"x")==0)&&(strcmp(a[5][5],"x")==0))
+	else if((strcmp(oneone,"x")==0)&&(strcmp(threethree,"x")==0)&&(strcmp(fivefive,"x")==0))	//checks diagonal
 	{
 		return true;
 	}
-	else if((strcmp(a[5][1],"x")==0)&&(strcmp(a[3][3],"x")==0)&&(strcmp(a[1][5],"x")==0))
+	else if((strcmp(fiveone,"x")==0)&&(strcmp(threethree,"x")==0)&&(strcmp(onefive,"x")==0))	//checks diagonal
 	{
 		return true;
 	}
@@ -104,7 +126,7 @@ bool isDone_x(const char *a[][6], int b)
 		return false;
 	}
 }
-bool computerTurn(const char *a[][6], int b , int c)
+bool computerTurn(const char *a[][6], int b , int c)		//checks if computer chosen space is free
 {	
 	const char *result=a[b][c];
 	const char *space=" ";
@@ -245,7 +267,7 @@ main()
 				board [row][column]="o";
 			}
 		}
-		//done=isDone_o(board, row);										// check if game is over
+		done=isDone_o(board, row);										// check if game is over
 		
 		int randNum1= rand();										//select 2 random numbers between 1 and 3.
 		randNum1= randNum1%3;
@@ -273,8 +295,9 @@ main()
 				}
 			}
 		}
-		//done=isDone_x(board, randNum1);
+		done=isDone_x(board, randNum1);
 	}
+	r++;
 	bool Owins=isDone_o(board, row);									//check if player has won the game
 	if(Owins==true)												//if so tell them the won
 	{
