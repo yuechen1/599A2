@@ -7,6 +7,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <curses.h>
+#include <libintl.h>
+#include <locale.h>
+
+#define _(STRING) gettext(STRING)
 
 int row;
 int column;
@@ -190,6 +194,11 @@ main()
 	noecho(); 														// curses call to set no echoing
 	getmaxyx(wnd,nrows,ncols);										//r and c cannot go above these numbers
 	curs_set(FALSE);
+	
+	setlocale (LC_ALL, "");
+	bindtextdomain ("hello", "/usr/share/locale/");
+	textdomain ("hello");
+	
 	bool clear;														//is the space chosen clear?
 	bool done = false;												//is the game over?
 	int letter;														//letter chosen
@@ -227,7 +236,7 @@ main()
 		}	
 	}
 
-	while (done==false)
+	while (1)
 	{
 		printboard(board);											//print new board
 
@@ -268,6 +277,10 @@ main()
 			}
 		}
 		done=isDone_o(board, row);										// check if game is over
+		if (done==true)
+		{
+			break;
+		}
 		
 		int randNum1= rand();										//select 2 random numbers between 1 and 3.
 		randNum1= randNum1%3;
@@ -296,6 +309,10 @@ main()
 			}
 		}
 		done=isDone_x(board, randNum1);
+		if (done==true)
+		{
+			break;
+		}
 	}
 	r++;
 	bool Owins=isDone_o(board, row);									//check if player has won the game
