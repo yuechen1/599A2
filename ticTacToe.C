@@ -189,21 +189,21 @@ main()
 {
 	WINDOW *wnd;
 
-	wnd = initscr(); 												// curses call to initialize window
-	cbreak(); 														// curses call to set no waiting for Enter key
-	noecho(); 														// curses call to set no echoing
-	getmaxyx(wnd,nrows,ncols);										//r and c cannot go above these numbers
+	wnd = initscr();   // curses call to initialize window
+	cbreak();   // curses call to set no waiting for Enter key
+	noecho();   // curses call to set no echoing
+	getmaxyx(wnd,nrows,ncols);   //r and c cannot go above these numbers
 	curs_set(FALSE);
 	
 	setlocale (LC_ALL, "");
 	bindtextdomain ("hello", "/usr/share/locale/");
 	textdomain ("hello");
 	
-	bool clear;														//is the space chosen clear?
-	bool done = false;												//is the game over?
-	int letter;														//letter chosen
-	int num;														//number chosen
-	const char *board[6][6];										//initalize the playing board
+	bool clear;   //is the space chosen clear?
+	bool done = false;   //is the game over?
+	int letter;   //letter chosen
+	int num;   //number chosen
+	const char *board[6][6];   //initalize the playing board
 	board[0][1]="1";
 	board[0][3]="2";
 	board[0][5]="3";
@@ -228,7 +228,7 @@ main()
 			board[5][i]="|";
 			board[0][i]=" ";
 		}
-		else if(i==1|| i== 3 || i==5)								//these are the spaces for the xs and ox to go
+		else if(i==1|| i== 3 || i==5)   //these are the spaces for the xs and ox to go
 		{
 			board[1][i]=" ";
 			board[3][i]=" ";
@@ -238,26 +238,26 @@ main()
 
 	while (1)
 	{
-		printboard(board);											//print new board
+		printboard(board);   //print new board
 
-		mvprintw(r,0,"please enter a letter: ...");					//get letter input
+		mvprintw(r,0,"please enter a letter: ...");   //get letter input
 		refresh();
 		letter=getch();
 
 		r++;
-		mvprintw(r,0,"please enter a number: ...");					//get number input
+		mvprintw(r,0,"please enter a number: ...");   //get number input
 		refresh();
 		num=getch();
 
-		clear= isEmpty(board, num, letter);							//check if space chosen is free
-		if(clear==true)												//if so print "o" in the space chosen and update the board.
+		clear= isEmpty(board, num, letter);   //check if space chosen is free
+		if(clear==true)   //if so print "o" in the space chosen and update the board.
 		{
 			mvprintw(row, column, "o");
 			board [row][column]="o";
 		}
-		else 														//if not prompt user to input new letter and number combo
+		else   //if not prompt user to input new letter and number combo
 		{	
-			while(clear==false)										//do not go to computer turn until user has chosen valid input.
+			while(clear==false)   //do not go to computer turn until user has chosen valid input.
 			{
 				mvprintw(r, 0, "input is invalde, try again\n");
 				r=r-2;
@@ -270,27 +270,27 @@ main()
 				num=getch();
 				clear= isEmpty(board, num, letter);
 			}
-			if(clear==true)											// print "o" in the space chosen and update the board.
+			if(clear==true)   // print "o" in the space chosen and update the board.
 			{
 				mvprintw(row, column, "o");
 				board [row][column]="o";
 			}
 		}
-		done=isDone_o(board, row);										// check if game is over
+		done=isDone_o(board, row);   // check if game is over
 		if (done==true)
 		{
 			break;
 		}
 		
-		int randNum1= rand();										//select 2 random numbers between 1 and 3.
+		int randNum1= rand();   //select 2 random numbers between 1 and 3.
 		randNum1= randNum1%3;
 		int randNum2=rand();
 		randNum2=randNum2%3;
 		bool compTurn=false;
-		while(compTurn==false)										// do not move on until the computer is done it's turn
+		while(compTurn==false)   // do not move on until the computer is done it's turn
 		{
-			clear=computerTurn(board, randNum1, randNum2);			//check if space chosen is free
-			if(clear==true)											//if so print "o" in the space chosen and update the board.
+			clear=computerTurn(board, randNum1, randNum2);   //check if space chosen is free
+			if(clear==true)   //if so print "o" in the space chosen and update the board.
 			{
 				mvprintw(row, column, "x");
 				board[randNum1][randNum2]="x";
