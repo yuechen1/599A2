@@ -34,6 +34,7 @@ bool isEmpty(const char *a[][6], int b, int c)			//checks if space is free
 	else
 	{
 		mvprintw(r, 0, " letter input not valid");
+		retrun false;
 	}
 	if(b=='1')
 	{
@@ -50,6 +51,7 @@ bool isEmpty(const char *a[][6], int b, int c)			//checks if space is free
 	else
 	{
 		mvprintw(r, 0, " number input not valid");
+		return false;
 	}
 	const char *result=a[row][column];
 	const char *space=" ";
@@ -194,10 +196,6 @@ main()
 	noecho(); 														// curses call to set no echoing
 	getmaxyx(wnd,nrows,ncols);										//r and c cannot go above these numbers
 	curs_set(FALSE);
-	
-	setlocale (LC_ALL, "");
-	bindtextdomain ("hello", "/usr/share/locale/");
-	textdomain ("hello");
 	
 	bool clear;														//is the space chosen clear?
 	bool done = false;												//is the game over?
