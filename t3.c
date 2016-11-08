@@ -181,14 +181,19 @@ void getPlayerInput() // This function collects player input for tile to play
 	}
 	updateBoard(number, letter, 'X');
 	mvprintw(letter,number,"X");
+	messages(2);
 	return;
 }
 
 void messages(int opcode) // This function will be used for printing messages on screen
 { // Used to easily add in language localization
-	if(opcode==1)
+	if(opcode==1) // opcode for user space selection prompt
 	{
 		mvprintw(13,6,"Choose a space"); 
+		mvprintw(14,7,"( , )");
+	}
+	else if(opcode==2) // opcode for resetting space selection output
+	{
 		mvprintw(14,7,"( , )");
 	}
 
