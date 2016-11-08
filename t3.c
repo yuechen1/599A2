@@ -130,8 +130,7 @@ bool isBlank(int number, int letter)
 
 void getPlayerInput() // This function collects player input for tile to play
 {
-	mvprintw(13,6,"Choose a space"); // change line 69-70 to a call to messages(1)
-	mvprintw(14,7,"( , )");
+	messages(1);    // Call to print function
 	bool loop = true;
 	int letter;
 	int number;
@@ -181,6 +180,8 @@ void getPlayerInput() // This function collects player input for tile to play
 	}
 	updateBoard(number, letter, 'X');
 	mvprintw(letter,number,"X");
+	number = NULL;
+	letter = NULL;
 	messages(2);
 	return;
 }
