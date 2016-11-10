@@ -54,7 +54,14 @@ void messages(int opcode) // This function will be used for printing messages on
 	{
 		mvprintw(13,6,"That space is not empty!");
 	}
-
+	else if(opcode==5)
+	{
+		mvprintw(13,6,"X Wins!");
+	}
+	else if(opcode==6)
+	{
+		mvprintw(13,6,"O Wins!");
+	}
 	return;
 }
 
@@ -84,11 +91,11 @@ void initVBoard() // Initialize the virtual board to blank
 {
 	int x=0;
 	int y=0;
-	while(x<=3)
+	while(x<3)
 	{
-		while(y<=3)
+		while(y<3)
 		{
-			board[x][y]="E"; // Set the space on the board with an invalid character
+			board[x][y]='E'; // Set the space on the board with an invalid character
 			y++;
 		}
 		x++;
@@ -161,7 +168,7 @@ void updateBoard(int number, int letter, char player)    // Updates the virtual 
 	return;
 }
 
-bool isBlank(int number, int letter)
+bool isBlank(int number, int letter) // Tests if a spot on the game board is empty
 {
 	int x;
 	int y;
@@ -171,17 +178,17 @@ bool isBlank(int number, int letter)
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 	}
 	else if(number==TWO)
@@ -190,17 +197,17 @@ bool isBlank(int number, int letter)
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 	}
 	else if(number==THREE)
@@ -209,17 +216,17 @@ bool isBlank(int number, int letter)
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=="E");    // Return false if the intended space is empty
+			return !(board[x][y]=='E');    // Return false if the intended space is empty
 		}
 	}
 	return true;    // If no match is found, return true to continue looping in getPlayerInput()
@@ -293,44 +300,48 @@ void getComputerInput()
 
 char testWin()
 {
-	char *mid = board[1][1];
-	if(mid=="X")
+	char mid = board[1][1];
+	if(mid=='X')
 	{
 		if(board[0][0]=="X" && board[2][2]=="X")
 		{		
-			return "X"; // If diagonal line \ X wins
+			return 'X'; // If diagonal line \ X wins
 		}
 		else if(board[0][1]=="X" && board[2][1]=="X")
 		{
-			return "X"; // If vertical line | X wins
+			return 'X'; // If vertical line | X wins
 		}
 		else if(board[0][2]=="X" && board[2][0]=="X")
 		{
-			return "X"; // If diagonal line / X wins
+			return 'X'; // If diagonal line / X wins
 		}
 		else if(board[1][0]=="X" && board[1][2]=="X")
 		{
-			return "X"; // If horizontal line - X wins
+			return 'X'; // If horizontal line - X wins
 		}
 	}
-	else if(mid=="O")
+	else if(mid=='O')
 	{
 		if(board[0][0]=="O" && board[2][2]=="O")
 		{		
-			return "O"; // If diagonal line \ X wins
+			return 'O'; // If diagonal line \ X wins
 		}
 		else if(board[0][1]=="O" && board[2][1]=="O")
 		{
-			return "O"; // If vertical line | X wins
+			return 'O'; // If vertical line | X wins
 		}
 		else if(board[0][2]=="O" && board[2][0]=="O")
 		{
-			return "O"; // If diagonal line / X wins
+			return 'O'; // If diagonal line / X wins
 		}
 		else if(board[1][0]=="O" && board[1][2]=="O")
 		{
-			return "O"; // If horizontal line - X wins
+			return 'O'; // If horizontal line - X wins
 		}
+	}
+	else
+	{
+		return 'Z';
 	}
 
 }
@@ -343,12 +354,25 @@ int main()
 	noecho();    // Curses call to not print input characters
 	initVBoard();
 	//testDraw();
-	char game = "5";
-	while(game=="5")
+	char game = 'Z';
+	while(true)
 	{
 		getPlayerInput();    // This function call gets player input for a space to play
 		getComputerInput();
 		game = testWin();    // This function tests for a win state
+		if(game!='Z')
+		{
+			break;
+		}
+	}
+	messages(3);
+	if(game=='X')
+	{
+		messages(5);
+	}
+	else if(game=='O')
+	{
+		messages(6);
 	}
 //	if(mvscanw(6,10,"X")==1)
 //	{
