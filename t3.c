@@ -12,6 +12,8 @@
 #include <locale.h>
 
 #define _(STRING) gettext(STRING)
+#define gettext_noop(String) String
+#define N_(String) gettext_noop(String)
 
 int row;
 int column;
@@ -38,7 +40,7 @@ void messages(int opcode) // This function will be used for printing messages on
 { // Used to easily add in language localization
 	if(opcode==1) // opcode for user space selection prompt
 	{
-		mvprintw(13,6,"Choose an empty space   "); 
+		mvprintw(13,6,_("Choose an empty space   ")); 
 		mvprintw(14,7,"( , )");
 	}
 	else if(opcode==2) // opcode for resetting space selection output
@@ -52,16 +54,9 @@ void messages(int opcode) // This function will be used for printing messages on
 	}
 	else if(opcode==4) // opcode for showing "space not blank" error
 	{
-		mvprintw(13,6,"That space is not empty!");
+		mvprintw(13,6,_("That space is not empty!"));
 	}
-	else if(opcode==5)
-	{
-		mvprintw(13,6,"X Wins!");
-	}
-	else if(opcode==6)
-	{
-		mvprintw(13,6,"O Wins!");
-	}
+
 	return;
 }
 
@@ -91,11 +86,11 @@ void initVBoard() // Initialize the virtual board to blank
 {
 	int x=0;
 	int y=0;
-	while(x<3)
+	while(x<=3)
 	{
-		while(y<3)
+		while(y<=3)
 		{
-			board[x][y]='E'; // Set the space on the board with an invalid character
+			board[x][y]="E"; // Set the space on the board with an invalid character
 			y++;
 		}
 		x++;
@@ -168,7 +163,7 @@ void updateBoard(int number, int letter, char player)    // Updates the virtual 
 	return;
 }
 
-bool isBlank(int number, int letter) // Tests if a spot on the game board is empty
+bool isBlank(int number, int letter)
 {
 	int x;
 	int y;
@@ -178,17 +173,17 @@ bool isBlank(int number, int letter) // Tests if a spot on the game board is emp
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 	}
 	else if(number==TWO)
@@ -197,17 +192,17 @@ bool isBlank(int number, int letter) // Tests if a spot on the game board is emp
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 	}
 	else if(number==THREE)
@@ -216,17 +211,17 @@ bool isBlank(int number, int letter) // Tests if a spot on the game board is emp
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]=="E");    // Return false if the intended space is empty
 		}
 	}
 	return true;    // If no match is found, return true to continue looping in getPlayerInput()
@@ -251,7 +246,7 @@ void getPlayerInput() // This function collects player input for tile to play
 			mvprintw(14,8,"B");
 			letter = B;
 		}
-		else if (choice == 'c' || choice == 'C')
+		else if (choice == 'c' || choice == 'B')
 		{
 			mvprintw(14,8,"C");
 			letter = C;
@@ -298,81 +293,22 @@ void getComputerInput()
 	// **ADD** Computer player code, include scripting abilitiy
 }
 
-char testWin()
-{
-	char mid = board[1][1];
-	if(mid=='X')
-	{
-		if(board[0][0]=="X" && board[2][2]=="X")
-		{		
-			return 'X'; // If diagonal line \ X wins
-		}
-		else if(board[0][1]=="X" && board[2][1]=="X")
-		{
-			return 'X'; // If vertical line | X wins
-		}
-		else if(board[0][2]=="X" && board[2][0]=="X")
-		{
-			return 'X'; // If diagonal line / X wins
-		}
-		else if(board[1][0]=="X" && board[1][2]=="X")
-		{
-			return 'X'; // If horizontal line - X wins
-		}
-	}
-	else if(mid=='O')
-	{
-		if(board[0][0]=="O" && board[2][2]=="O")
-		{		
-			return 'O'; // If diagonal line \ X wins
-		}
-		else if(board[0][1]=="O" && board[2][1]=="O")
-		{
-			return 'O'; // If vertical line | X wins
-		}
-		else if(board[0][2]=="O" && board[2][0]=="O")
-		{
-			return 'O'; // If diagonal line / X wins
-		}
-		else if(board[1][0]=="O" && board[1][2]=="O")
-		{
-			return 'O'; // If horizontal line - X wins
-		}
-	}
-	else
-	{
-		return 'Z';
-	}
-
-}
-
 int main()
 {
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+	
+	
 	init();    // Call function to initialize curses
 	drawBoard();    // Call to draw the initial blank board
 	cbreak();    // Curses call to not require enter key for input
 	noecho();    // Curses call to not print input characters
-	initVBoard();
 	//testDraw();
-	char game = 'Z';
 	while(true)
 	{
 		getPlayerInput();    // This function call gets player input for a space to play
 		getComputerInput();
-		game = testWin();    // This function tests for a win state
-		if(game!='Z')
-		{
-			break;
-		}
-	}
-	messages(3);
-	if(game=='X')
-	{
-		messages(5);
-	}
-	else if(game=='O')
-	{
-		messages(6);
 	}
 //	if(mvscanw(6,10,"X")==1)
 //	{
