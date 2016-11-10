@@ -244,7 +244,7 @@ void getPlayerInput() // This function collects player input for tile to play
 			mvprintw(14,8,"B");
 			letter = B;
 		}
-		else if (choice == 'c' || choice == 'B')
+		else if (choice == 'c' || choice == 'C')
 		{
 			mvprintw(14,8,"C");
 			letter = C;
@@ -291,17 +291,64 @@ void getComputerInput()
 	// **ADD** Computer player code, include scripting abilitiy
 }
 
+char testWin()
+{
+	char *mid = board[1][1];
+	if(mid=="X")
+	{
+		if(board[0][0]=="X" && board[2][2]=="X")
+		{		
+			return "X"; // If diagonal line \ X wins
+		}
+		else if(board[0][1]=="X" && board[2][1]=="X")
+		{
+			return "X"; // If vertical line | X wins
+		}
+		else if(board[0][2]=="X" && board[2][0]=="X")
+		{
+			return "X"; // If diagonal line / X wins
+		}
+		else if(board[1][0]=="X" && board[1][2]=="X")
+		{
+			return "X"; // If horizontal line - X wins
+		}
+	}
+	else if(mid=="O")
+	{
+		if(board[0][0]=="O" && board[2][2]=="O")
+		{		
+			return "O"; // If diagonal line \ X wins
+		}
+		else if(board[0][1]=="O" && board[2][1]=="O")
+		{
+			return "O"; // If vertical line | X wins
+		}
+		else if(board[0][2]=="O" && board[2][0]=="O")
+		{
+			return "O"; // If diagonal line / X wins
+		}
+		else if(board[1][0]=="O" && board[1][2]=="O")
+		{
+			return "O"; // If horizontal line - X wins
+		}
+	}
+
+}
+
 int main()
 {
 	init();    // Call function to initialize curses
 	drawBoard();    // Call to draw the initial blank board
 	cbreak();    // Curses call to not require enter key for input
 	noecho();    // Curses call to not print input characters
+	initVBoard();
 	//testDraw();
-	while(true)
+	char game = "5";
+	while(game=="5")
 	{
 		getPlayerInput();    // This function call gets player input for a space to play
 		getComputerInput();
+		game = testWin();    // This function tests for a win state
 	}
 //	if(mvscanw(6,10,"X")==1)
 //	{
