@@ -24,6 +24,7 @@ int C = 10;
 int ONE = 10;
 int TWO = 12;
 int THREE = 14;
+char EMPTY = 'E';
 
 void init() // Initializing tasks, run when the program starts
 {
@@ -178,36 +179,37 @@ bool isBlank(int number, int letter) // Tests if a spot on the game board is emp
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 	}
 	else if(number==TWO)
 	{
+		mvprintw(18,6,"TWO");
 		x = 1;
 		if(letter==A)
 		{
 			y = 0;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 		else if (letter==B)
 		{
 			y = 1;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 		else if (letter==C)
 		{
 			y = 2;
-			return !(board[x][y]=='E');    // Return false if the intended space is empty
+			return !(board[x][y]==EMPTY);    // Return false if the intended space is empty
 		}
 	}
 	else if(number==THREE)
